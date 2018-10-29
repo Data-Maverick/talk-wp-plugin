@@ -93,7 +93,11 @@ function coral_talk_comments_template($user_id = false) {
 	// print_r($token);
 	// print "</pre>";
 	$auth_token = JWT::encode($token, Talk_Plugin::$key);
+	ob_start();
 	require( coral_talk_get_comments_template_path() );
+	$s = ob_get_contents();
+	ob_end_clean();
+	return $s;
 }
 
 /**
@@ -123,6 +127,24 @@ function talk_user_id_field( $user ) {
 		</tr>
 	</table>
 	<?php
+}
+
+function talk_embed() {
+	$s = "<h3>Comments</h3>\n";
+	$user_id = get_current_user_id();
+	if (!empty($user_id)) {
+	    if (function_exists( 'wc_memberships' )) {
+	        if ((wc_memberships_is_user_active_member($user_id, "monthly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "yearly-membership-plans"))) {
+	                $s .= coral_talk_comments_template($user_id);
+	        } else {
+				$s .= "<p>Please note you must be a Maverick Insider to comment - <a href='/insider/'>sign up here</a></p>\n";
+	            $s .= coral_talk_comments_template();
+	        }
+	    }
+	} else {
+		$s .= "<p>Please <a href='/sign-in/'>log in</a> or <a href='/create-account/'>register</a> to view comments</p>\n";
+	}
+	return $s;
 }
 
 new Talk_Plugin;
