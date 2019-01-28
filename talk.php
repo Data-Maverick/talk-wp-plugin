@@ -140,12 +140,12 @@ function talk_embed() {
 	        if ((wc_memberships_is_user_active_member($user_id, "monthly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "yearly-membership-plans"))) {
 	                $s .= coral_talk_comments_template($user_id);
 	        } else {
-				$s .= "<p>Please note you must be a <a href='/insider/?utm_source=DM_Website&utm_medium=post-article&utm_campaign=comments'>Maverick Insider</a> to comment. <a href='/insider/?utm_source=DM_Website&utm_medium=post-article&utm_campaign=comments'>Sign up here</a>.</p>\n";
+				$s .= "<p>Please note you must be a <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Maverick Insider</a> to comment. <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Sign up here</a>.</p>\n";
 	            $s .= coral_talk_comments_template();
 	        }
 	    }
 	} else {
-		$s .= "<p>Please <a href='#' class='login-alert triggeredFromLoginPopup'>sign in</a> or <a href='/create-account/'>create an account</a> to view the comments. To join the conversation, sign up as a <a href='/insider/?utm_source=DM_Website&utm_medium=post-article&utm_campaign=comments'>Maverick Insider</a>.</p>\n";
+		$s .= "<p>Please <a href='#' class='login-alert triggeredFromLoginPopup'>sign in</a> or <a href='/create-account/'>create an account</a> to view the comments. To join the conversation, sign up as a <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Maverick Insider</a>.</p>\n";
 	}
 	return $s;
 }
