@@ -137,7 +137,7 @@ function talk_embed() {
 	$user_id = get_current_user_id();
 	if (!empty($user_id)) {
 	    if (function_exists( 'wc_memberships' )) {
-	        if ((wc_memberships_is_user_active_member($user_id, "monthly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "yearly-membership-plans"))) {
+	        if ((wc_memberships_is_user_active_member($user_id, "monthly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "yearly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "offline-membership-plans-fixed-term")) || (wc_memberships_is_user_active_member($user_id, "offline-membership-plans-monthly"))) {
 	                $s .= coral_talk_comments_template($user_id);
 	        } else {
 				$s .= "<p>Please note you must be a <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Maverick Insider</a> to comment. <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Sign up here</a>.</p>\n";
