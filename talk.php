@@ -20,6 +20,8 @@ use Firebase\JWT\JWT;
  */
 class Talk_Plugin {
 	static $key = "0C945O*iPo9^";
+	static $talk_mode = "testing";
+	static $talk_test_article = "curatorially-speaking-heres-how-to-start-your-very-own-art-collection";
 	/**
 	 * Talk_Plugin constructor.
 	 */
@@ -133,6 +135,13 @@ function talk_user_id_field( $user ) {
 }
 
 function talk_embed() {
+	if (Talk_Plugin::$talk_mode == "testing") {
+		global $post;
+    	$post_slug = $post->post_name;
+		if ($post_slug !== Talk_Plugin::$talk_test_article) {
+			return "";
+		}
+	}
 	$s = "<h3>Comments</h3>\n";
 	$user_id = get_current_user_id();
 	if (!empty($user_id)) {
