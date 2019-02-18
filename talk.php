@@ -85,13 +85,22 @@ function coral_talk_comments_template($user_id = false) {
 	}
 	$talk_url = get_option( 'coral_talk_base_url' );
 	$user = get_userdata($user_id);
+	$last_name = get_user_meta(get_current_user_id(), 'last_name', true);
+	$first_name = get_user_meta(get_current_user_id(), 'first_name', true);
+	$name = $user->data->display_name;
+	if (!empty($first_name) && !empty($last_name)) {
+		$name = $first_name . " " . $last_name;
+	}
+	if (strpos($name, "@") !== false) {
+		$name = ucfirst(substr($name, 0, strpos($name, "@")));
+	}
 	$token = array(
 		"jti" => uniqid(),
 		"exp" => time() + (7 * 24 * 60 * 60),
 		"iss" => $talk_url,
 		"aud" => "talk",
 		"sub" => "wordpress-" . $user_id,
-		"name" => $user->data->display_name,
+		"name" => $name,
 		"email" => $user->data->user_email
 	);
 	// print "<pre>";
@@ -141,12 +150,18 @@ function talk_embed() {
 		if ($post_slug !== Talk_Plugin::$talk_test_article) {
 			return "";
 		}
+		// $user = get_userdata(get_current_user_id());
+		// $user_meta = get_user_meta(get_current_user_id());
+		// print "<pre>";
+		// print_r($user);
+		// print_r($user_meta);
+		// print "</pre>";
 	}
 	$s = "<h3>Comments</h3>\n";
 	$user_id = get_current_user_id();
 	if (!empty($user_id)) {
 	    if (function_exists( 'wc_memberships' )) {
-	        if ((wc_memberships_is_user_active_member($user_id, "monthly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "yearly-membership-plans")) || (wc_memberships_is_user_active_member($user_id, "offline-membership-plans-fixed-term")) || (wc_memberships_is_user_active_member($user_id, "offline-membership-plans-monthly"))) {
+	        if (isDMMembershipActive()) {
 	                $s .= coral_talk_comments_template($user_id);
 	        } else {
 				$s .= "<p>Please note you must be a <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Maverick Insider</a> to comment. <a href='/insider/?utm_source=DM_Website&utm_medium=Comments'>Sign up here</a>.</p>\n";
